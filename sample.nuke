@@ -1,6 +1,5 @@
 # hello_world
 echo "hello world"
-#call_ls
 ^ls -l
 # install
   # # on the head of the line means target declaration

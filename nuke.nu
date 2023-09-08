@@ -28,11 +28,14 @@ module nuke {
 
         }
     | first
+    | $in out> /dev/null
     
   }
 
   export def call_command [command : string] {
+    print ("> " + $command)
     run-external "nu" "-c" $command
+    print ""
   }
 }
 
