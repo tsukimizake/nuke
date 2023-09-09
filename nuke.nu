@@ -1,4 +1,4 @@
-module nuke {
+module impl {
 
   export def split_targets [file : string] {
     open $file 
@@ -20,19 +20,6 @@ module nuke {
       }
   }
 
-  export def run [command : string] {
-    split_targets "tests/sample.nuke"
-    | filter {|target| $target.name == $command }
-    | each {|target|
-          $target.commands
-          | each {|command| call_command $command }
-
-        }
-    # ignore return value
-    | first
-    | $in out> /dev/null
-    
-  }
 
   export def call_command [command : string] {
     print ("> " + $command)
@@ -41,19 +28,37 @@ module nuke {
   }
 }
 
+module nuke {
+  use impl
+  export def run [command : string] {
+    impl split_targets "tests/sample.nuke"
+    | filter {|target| $target.name == $command }
+    | each {|target|
+          $target.commands
+          | each {|command| impl call_command $command }
+
+        }
+    # ignore return value
+    | first
+    | $in out> /dev/null
+    
+  }
+}
+
 use nuke
 
 use std assert
 #[test]
 def test_split_targets [] {
-  print (nuke split_targets "tests/sample.nuke")
+  use impl
+  print (impl split_targets "tests/sample.nuke")
   let expected = [ {name: "hello_world", commands: ['echo "hello world"', "^ls -l"]}
                  , {name: "install", commands: 
                      [ "# # on the head of the line means target declaration" 
                      , "# these lines are comments" 
                      , "source ./nuke.nu" ]} 
                  ]
-  nuke split_targets "tests/sample.nuke"
+  impl split_targets "tests/sample.nuke"
    | assert equal $expected $in
 }
 
