@@ -20,7 +20,7 @@ module nuke {
   }
 
   export def run [command : string] {
-    split_targets "sample.nuke"
+    split_targets "tests/sample.nuke"
     | filter {|target| $target.name == $command }
     | each {|target|
           $target.commands
