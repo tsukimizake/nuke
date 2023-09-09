@@ -1,10 +1,7 @@
 # hello_world
-echo "hello world"
-^ls -l
+  echo "hello world"
+  ^ls -l
 # install
   # # on the head of the line means target declaration
   # these lines are comments
   source ./nuke.nu
-# test_split_targets
-  nuke split_targets sample.nuke
-
