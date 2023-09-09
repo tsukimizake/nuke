@@ -53,3 +53,8 @@ def test_split_targets [] {
   nuke split_targets "tests/sample.nuke"
    | assert equal $expected $in
 }
+
+#[test]
+def test_run [] {
+  nuke run "hello_world"
+}
