@@ -47,7 +47,9 @@ use std assert
 #[test]
 def test_split_targets [] {
   print (nuke split_targets "tests/sample.nuke")
+  let expected = [ {name: "hello_world", commands: ['echo "hello world"', "^ls -l"]}
+                  , {name: "install", commands: [ "# # on the head of the line means target declaration" , "# these lines are comments" , "source ./nuke.nu" ]} 
+                  ]
   nuke split_targets "tests/sample.nuke"
-   | assert equal [{name: "hello_world", commands: ['echo "hello world"', "^ls -l"]} , {name: "install", commands: [ "# # on the head of the line means target declaration" , "# these lines are comments" , "source ./nuke.nu" ]} ] $in
-
+   | assert equal $expected $in
 }
